@@ -13,7 +13,7 @@ export class HistoryRouter extends BaseRouter {
   handler() {
     this.render(this.getState());
   }
-  //获取路由路径
+  //获取路由路径`1
   getState() {
     const path = window.location.pathname;
     return path ? path : '/';
