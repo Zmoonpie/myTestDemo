@@ -1,2 +1,0 @@
-# myWebPackDemo
-www sdassssssssss
