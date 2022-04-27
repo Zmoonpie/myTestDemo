@@ -28,4 +28,4 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASS }}
-          script: cd ~ && sh run.sh ${{ secrets.DOCKER_NAME }} ${{ secrets.DOCKER_PASS }}
+          script: cd ~/sh && sh run.sh ${{ secrets.DOCKER_NAME }} ${{ secrets.DOCKER_PASS }}
