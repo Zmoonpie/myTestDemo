@@ -1,36 +1,31 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
-
-# Controls when the workflow will run
+name: Docker Image CI # Actions名称
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-  # Allows you to run this workflow manually from the Actions tab
+  # 触发workflow的动作形式，这里是手动触发
   workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+    - name: checkout
+      uses: actions/checkout@master
+    # 安装依赖
+    # - name: install
+    #   run: yarn
+    # 打包
+    # - name: build project
+     #  run: yarn run build
+    # 打包镜像推送到腾讯云容器镜像服务
+    - name: Build the Docker image
+      run: |
+        docker login -u ${{secrets.DOCKER_NAME}} -p ${{secrets.DOCKER_PASS}}
+        docker build -t actionDemo:latest .
+        docker tag actionDemo https://hub.docker.com/r/moonpieeee/actionDemo:latest
+        docker push https://hub.docker.com/r/moonpieeee/actionDemo:latest
+    # 使用appleboy/ssh-action@master登录服务器执行拉取镜像脚本，服务器ip、用户名、密码配置方式同容器镜像服务配置方式一样
+    - name: ssh docker login
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        password: ${{ secrets.SSH_PASS }}
+        script: cd ~ && sh lizonghao.sh ${{ secrets.DOCKER_NAME }} ${{ secrets.DOCKER_PASS }}
