@@ -6,26 +6,26 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: checkout
-      uses: actions/checkout@master
-    # 安装依赖
-    # - name: install
-    #   run: yarn
-    # 打包
-    # - name: build project
-     #  run: yarn run build
-    # 打包镜像推送到腾讯云容器镜像服务
-    - name: Build the Docker image
-      run: |
-        docker login -u ${{secrets.DOCKER_NAME}} -p ${{secrets.DOCKER_PASS}}
-        docker build -t actiondemo:latest .
-        docker tag actiondemo https://hub.docker.com/r/moonpieeee/actiondemo:latest
-        docker push https://hub.docker.com/r/moonpieeee/actiondemo:latest
-    # 使用appleboy/ssh-action@master登录服务器执行拉取镜像脚本，服务器ip、用户名、密码配置方式同容器镜像服务配置方式一样
-    - name: ssh docker login
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        password: ${{ secrets.SSH_PASS }}
-        script: cd ~ && sh lizonghao.sh ${{ secrets.DOCKER_NAME }} ${{ secrets.DOCKER_PASS }}
+      - name: checkout
+        uses: actions/checkout@master
+      # 安装依赖
+      # - name: install
+      #   run: yarn
+      # 打包
+      # - name: build project
+      #  run: yarn run build
+      # 打包镜像推送到腾讯云容器镜像服务
+      - name: Build the Docker image
+        run: |
+          docker login -u ${{secrets.DOCKER_NAME}} -p ${{secrets.DOCKER_PASS}}
+          docker build -t actiondemo:latest .
+          docker tag actiondemo moonpieeee/actiondemo:latest
+          docker push  moonpieeee/actiondemo:latest
+      # 使用appleboy/ssh-action@master登录服务器执行拉取镜像脚本，服务器ip、用户名、密码配置方式同容器镜像服务配置方式一样
+      - name: ssh docker login
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASS }}
+          script: cd ~ && sh run.sh ${{ secrets.DOCKER_NAME }} ${{ secrets.DOCKER_PASS }}
