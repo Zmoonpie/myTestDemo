@@ -1,9 +1,9 @@
 name: Docker Image CI # Actions名称
 on:
   # 触发workflow的动作形式，这里是手动触发
- # workflow_dispatch:
+  # workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [main]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,7 +12,9 @@ jobs:
         uses: actions/checkout@master
       # 安装依赖
       - name: install
-        run: yarn
+        run: |
+          yarn config set registry 'https://registry.npm.taobao.org'
+          yarn
       # 打包
       - name: build project
         run: yarn run build
