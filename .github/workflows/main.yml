@@ -12,9 +12,7 @@ jobs:
         uses: actions/checkout@master
       # 安装依赖
       - name: install
-        run: |
-         yarn config set registry 'https://registry.npm.taobao.org'
-         yarn
+        run:  yarn
       # 打包
       - name: build project
         run: yarn run build
