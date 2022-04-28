@@ -17,7 +17,7 @@ jobs:
          yarn
       # 打包
       - name: build project
-       run: yarn run build
+        run: yarn run build
        - name: Build the Docker image
         run: |
           docker login -u ${{secrets.DOCKER_NAME}} -p ${{secrets.DOCKER_PASS}}
