@@ -14,8 +14,8 @@ jobs:
       - name: install
         run: yarn
       # 打包
-      # - name: build project
-      #  run: yarn run build
+      - name: build project
+       run: yarn run build
       # 打包镜像推送到腾讯云容器镜像服务
       - name: Build the Docker image
         run: |
